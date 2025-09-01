@@ -445,6 +445,89 @@ wp-blog-header.php
 wp-comments-post.php
 wp-mail.php
 
+# Database Discovery - Specific Databases/Tables/Columns
+intitle:"index of" "database/" OR "db/" OR "sql/" OR "mysql/" OR "postgres/"
+filetype:sql "CREATE DATABASE" OR "CREATE SCHEMA" OR "USE database"
+filetype:sql "CREATE TABLE users" OR "CREATE TABLE admin" OR "CREATE TABLE customers"
+filetype:sql "CREATE TABLE" ("id" OR "user_id" OR "admin_id" OR "customer_id")
+filetype:sql "CREATE TABLE" ("username" OR "email" OR "password" OR "phone" OR "credit_card")
+filetype:sql "INSERT INTO" ("users" OR "admin" OR "customers" OR "members" OR "accounts")
+filetype:sql "INSERT INTO" ("username" OR "password" OR "email" OR "credit_card" OR "ssn")
+filetype:sql "UPDATE" ("users" OR "admin" OR "customers") "SET" ("password" OR "email" OR "phone")
+filetype:sql "SELECT * FROM" ("users" OR "admin" OR "customers" OR "members" OR "accounts")
+filetype:sql "SELECT" ("username" OR "password" OR "email" OR "credit_card" OR "ssn") "FROM"
+
+# Database Configuration Files
+filetype:conf "database.conf" OR "db.conf" OR "mysql.conf" OR "postgres.conf"
+filetype:ini "database.ini" OR "db.ini" OR "config.ini" "database"
+filetype:xml "database.xml" OR "hibernate.cfg.xml" OR "persistence.xml"
+filetype:json "database.json" OR "config.json" "database" OR "mongodb"
+filetype:yml "database.yml" OR "application.yml" "database" OR "mysql" OR "postgres"
+filetype:env ".env" "DATABASE_URL" OR "DB_HOST" OR "DB_NAME" OR "DB_USER"
+
+# Database Backup Files
+intitle:"index of" "backup/" "*.sql" OR "*.bak" OR "*.dump" OR "*.db"
+filetype:bak "*.db.bak" OR "*.sql.bak" OR "*.backup" OR "*.dump"
+filetype:dump "database.dump" OR "mysql.dump" OR "postgres.dump" OR "backup.dump"
+filetype:db "database.db" OR "data.db" OR "app.db" OR "users.db"
+
+# Specific Database Schemas and Structures
+filetype:sql "DESCRIBE" OR "SHOW TABLES" OR "SHOW DATABASES" OR "SHOW COLUMNS"
+filetype:sql "information_schema" OR "mysql.user" OR "mysql.db" OR "performance_schema"
+filetype:sql "sys.tables" OR "sys.databases" OR "sys.columns" OR "sys.objects"
+filetype:sql "pg_tables" OR "pg_database" OR "pg_user" OR "pg_roles"
+filetype:sql "sqlite_master" OR "sqlite_sequence" OR "sqlite_temp_master"
+
+# CVE Vulnerability Discovery
+intitle:"CVE-" OR "Common Vulnerabilities and Exposures" OR "security advisory"
+filetype:pdf "CVE-" OR "vulnerability report" OR "security advisory"
+filetype:txt "CVE-" OR "vulnerability disclosure" OR "security notice"
+filetype:xml "CVE-" OR "vulnerability" OR "security" OR "advisory"
+filetype:json "CVE-" OR "vulnerabilities" OR "security_advisory" OR "cve_list"
+filetype:csv "CVE-" OR "vulnerability" OR "cve_database" OR "security_issues"
+
+# Specific CVE Searches
+intext:"CVE-2021-44228" OR "Log4Shell" OR "Log4j vulnerability"
+intext:"CVE-2021-34527" OR "PrintNightmare" OR "Windows Print Spooler"
+intext:"CVE-2020-1472" OR "Zerologon" OR "Netlogon vulnerability"
+intext:"CVE-2021-26855" OR "ProxyLogon" OR "Exchange vulnerability"
+intext:"CVE-2021-34523" OR "ProxyShell" OR "Exchange ProxyShell"
+intext:"CVE-2019-19781" OR "Citrix ADC" OR "Citrix Gateway"
+intext:"CVE-2020-0688" OR "Microsoft Exchange" OR "Exchange control panel"
+intext:"CVE-2021-21972" OR "VMware vCenter" OR "vSphere Client"
+intext:"CVE-2021-22005" OR "VMware vCenter" OR "file upload vulnerability"
+intext:"CVE-2021-26084" OR "Confluence" OR "Atlassian Confluence"
+intext:"CVE-2021-41773" OR "Apache HTTP Server" OR "path traversal"
+intext:"CVE-2021-42013" OR "Apache HTTP Server" OR "path traversal"
+intext:"CVE-2022-22965" OR "Spring4Shell" OR "Spring Framework"
+intext:"CVE-2022-1388" OR "F5 BIG-IP" OR "iControl REST"
+intext:"CVE-2022-30190" OR "Follina" OR "MSDT vulnerability"
+
+# CVE Databases and Feeds
+inurl:"cve.mitre.org" OR "nvd.nist.gov" OR "cvedetails.com"
+inurl:"security-tracker.debian.org" OR "ubuntu.com/security/cve"
+inurl:"redhat.com/security/cve" OR "oracle.com/security-alerts"
+inurl:"microsoft.com/security" OR "security.googleblog.com"
+inurl:"cert.org" OR "us-cert.gov" OR "securityfocus.com"
+
+# Exploit Database Searches
+inurl:"exploit-db.com" OR "exploitdb.com" OR "packetstormsecurity.com"
+inurl:"rapid7.com/db/modules/exploit" OR "metasploit.com/modules"
+inurl:"github.com" "CVE" "exploit" OR "poc" OR "proof of concept"
+inurl:"gitlab.com" "CVE" "exploit" OR "vulnerability" OR "security"
+
+# Security Advisories and Bulletins
+filetype:pdf "security bulletin" OR "security advisory" OR "vulnerability notice"
+filetype:html "security advisory" OR "vulnerability disclosure" OR "patch notes"
+intitle:"security advisory" OR "vulnerability report" OR "CVE notification"
+intext:"patch available" OR "security update" OR "vulnerability fix"
+
+# Vulnerable Software Versions
+intext:"vulnerable version" OR "affected version" OR "fixed in version"
+intext:"before version" OR "prior to version" OR "upgrade to"
+intext:"security patch" OR "hotfix" OR "emergency patch"
+filetype:xml "vulnerable_software" OR "affected_products" OR "security_fixes"
+
 # Joomla directories
 administrator
 components
@@ -5479,3 +5562,70 @@ zoom
 zope
 zorum
 zt
+
+# البحث عن نصوص محددة داخل الصفحات (intext)
+# البحث عن كلمات مرور وأسماء مستخدمين
+intext:"password" intext:"username" filetype:txt
+intext:"database_password" intext:"mysql" filetype:env
+intext:"DB_PASSWORD" intext:"DB_USERNAME" filetype:env
+intext:"admin" intext:"password" site:*.gov.sa
+intext:"root" intext:"toor" filetype:txt
+intext:"ftp_user" intext:"ftp_pass" filetype:conf
+
+# البحث عن معلومات حساسة
+intext:"credit card" intext:"cvv" filetype:xlsx
+intext:"phone number" intext:"email" filetype:csv
+intext:"national id" intext:"iqama" filetype:xlsx
+intext:"bank account" intext:"iban" filetype:pdf
+intext:"passport" intext:"visa" filetype:pdf
+
+# البحث عن ثغرات أمنية
+intext:"sql injection" intext:"vulnerable" site:*.edu.sa
+intext:"xss" intext:"cross site scripting" filetype:pdf
+intext:"csrf" intext:"token missing" filetype:txt
+intext:"directory traversal" intext:"../../../" filetype:log
+intext:"rce" intext:"remote code execution" filetype:txt
+
+# البحث عن إعدادات الخوادم
+intext:"server ip" intext:"port" filetype:txt
+intext:"localhost" intext:"127.0.0.1" filetype:config
+intext:"database host" intext:"3306" filetype:env
+intext:"redis" intext:"6379" filetype:conf
+intext:"mongodb" intext:"27017" filetype:yaml
+
+# البحث عن ملفات الإعدادات والتهيئة
+intext:"config" intext:"settings" filetype:json
+intext:"api_key" intext:"secret_key" filetype:yaml
+intext:"jwt" intext:"token" filetype:js
+intext:"oauth" intext:"client_id" filetype:json
+intext:"webhook" intext:"secret" filetype:env
+
+# البحث عن ملاحظات المطورين
+intext:"TODO" intext:"FIXME" site:*.com.sa
+intext:"hack" intext:"bypass" filetype:txt
+intext:"debug" intext:"test" filetype:log
+intext:"backup" intext:"old" filetype:sql
+intext:"temp" intext:"tmp" filetype:txt
+
+# البحث عن كلمات مرور وهمية/افتراضية
+intext:"password" intext:"123456" filetype:txt
+intext:"admin" intext:"admin" filetype:config
+intext:"root" intext:"password" filetype:env
+intext:"user" intext:"pass" filetype:json
+
+# البحث عن أرقام بطاقات الائتمان
+intext:"credit card" intext:"expiration" filetype:xlsx
+intext:"card number" intext:"cvv2" filetype:csv
+intext:"visa" intext:"mastercard" filetype:pdf
+
+# البحث عن مفاتيح API وتوكنات
+intext:"api_key" intext:"sk-" filetype:env
+intext:"access_token" intext:"bearer" filetype:txt
+intext:"secret" intext:"key" filetype:yaml
+intext:"private_key" intext:"-----BEGIN" filetype:pem
+
+# البحث عن بيانات الشركات والموظفين
+intext:"employee" intext:"salary" filetype:xlsx
+intext:"company" intext:"registration" filetype:pdf
+intext:"tax" intext:"identification" filetype:csv
+intext:"license" intext:"commercial" filetype:pdf
