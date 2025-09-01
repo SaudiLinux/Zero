@@ -1,0 +1,32 @@
+# Zero Security Framework - Authors and Contributors
+
+## Lead Developer
+
+**SayerLinux** <SayerLinux1@gmail.com>
+- GitHub: https://github.com/SaudiLinux/Zero.git
+- Role: Lead Developer & Security Researcher
+- Contributions: 
+  - Initial framework development
+  - Vulnerability detection modules
+  - SQL injection detection
+  - XSS vulnerability scanner
+  - CSRF testing capabilities
+  - Hidden file discovery
+  - Firewall bypass mechanisms
+  - Database credential extraction
+  - Zero-day detection framework
+  - Report generation system
+
+## Project Information
+
+- **Project Name**: Zero Security Framework
+- **Repository**: https://github.com/SaudiLinux/Zero.git
+- **License**: Educational and authorized security testing only
+- **Created**: 2024
+- **Version**: 1.0.0
+
+## Contact
+
+For questions, bug reports, or contributions, please contact:
+- Email: SayerLinux1@gmail.com
+- GitHub Issues: https://github.com/SaudiLinux/Zero.git/issues
