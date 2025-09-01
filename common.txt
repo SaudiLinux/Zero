@@ -7,6 +7,28 @@ admin.html
 admin.asp
 admin.jsp
 admin.cgi
+admin/
+admin/dashboard
+admin/panel
+admin/login
+admin/logout
+admin/index.php
+admin/index.html
+admin/home
+admin/control
+admin/console
+admin/portal
+admin/manage
+admin/management
+admin/secure
+admin/auth
+admin/authenticate
+admin/signin
+admin/signon
+admin/access
+admin/private
+admin/secure
+admin/secret
 administrator.php
 administrator.html
 administrator.asp
@@ -182,6 +204,232 @@ attach
 
 # CMS directories
 wp-admin
+
+# URL-based admin searches (inurl:admin)
+site/admin
+web/admin
+panel/admin
+manage/admin
+control/admin
+secure/admin
+private/admin
+system/admin
+app/admin
+cms/admin
+portal/admin
+dashboard/admin
+administration/admin
+backend/admin
+frontend/admin
+core/admin
+main/admin
+central/admin
+global/admin
+local/admin
+
+# Text-based searches (intext:)
+# Common sensitive text patterns
+username
+password
+passwd
+pass
+user
+login
+email
+mail
+phone
+address
+name
+admin
+root
+user_id
+user_name
+user_pass
+admin_user
+admin_pass
+root_pass
+database
+db_name
+db_user
+db_pass
+mysql
+sql
+config
+settings
+private
+secret
+key
+token
+api_key
+secret_key
+private_key
+access_token
+bearer
+credential
+auth
+authentication
+authorization
+session
+cookie
+jwt
+token
+oauth
+api
+endpoint
+url
+link
+path
+directory
+folder
+file
+upload
+download
+backup
+log
+error
+warning
+debug
+test
+dev
+staging
+production
+localhost
+127.0.0.1
+192.168
+10.0
+172.16
+phpinfo
+phpmyadmin
+adminer
+wp-admin
+wp-login
+config.php
+.env
+.git
+.svn
+.htaccess
+web.config
+robots.txt
+sitemap.xml
+backup.sql
+backup.zip
+backup.tar
+dump.sql
+database.sql
+log.txt
+error.log
+access.log
+debug.log
+install.php
+setup.php
+upgrade.php
+update.php
+maintenance.php
+readme.txt
+license.txt
+changelog.txt
+version.txt
+info.php
+phpinfo.php
+test.php
+debug.php
+config.bak
+config.old
+config.backup
+password.txt
+pass.txt
+users.txt
+accounts.txt
+emails.txt
+users.sql
+admin.sql
+wordpress.sql
+drupal.sql
+joomla.sql
+magento.sql
+
+# Advanced Google Dorking patterns
+# FTP servers and open directories
+index of /ftp
+index of /pub
+index of /upload
+index of /files
+index of /downloads
+ftp://
+public ftp
+anonymous ftp
+
+# WordPress configuration files
+wp-config.php
+wp-config.txt
+wp-config.bak
+wp-config.old
+wp-config.backup
+wp-config.php.txt
+wp-config.php.bak
+
+# SSH private keys and configurations
+BEGIN OPENSSH PRIVATE KEY
+BEGIN RSA PRIVATE KEY
+BEGIN DSA PRIVATE KEY
+BEGIN EC PRIVATE KEY
+ssh_host_rsa_key
+ssh_host_dsa_key
+ssh_host_ecdsa_key
+ssh_host_ed25519_key
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+authorized_keys
+known_hosts
+ssh_config
+sshd_config
+
+# Control panels and gateways
+intitle:"SSL Network Extender Login"
+intitle:"Admin Login"
+intitle:"Control Panel"
+intitle:"Web Administration"
+intitle:"Gateway Login"
+intitle:"Siemens" inurl:"/portal/portal.mwsl"
+intitle:"Cisco" inurl:"/admin/"
+intitle:"Fortinet" inurl:"/login"
+
+# Configuration files
+proftpd.conf
+vsftpd.conf
+pure-ftpd.conf
+apache2.conf
+httpd.conf
+nginx.conf
+my.cnf
+my.ini
+php.ini
+postgresql.conf
+pg_hba.conf
+mongod.conf
+redis.conf
+
+# Database files and logs
+*.sql
+*.db
+*.sqlite
+*.mdb
+*.accdb
+*.xls
+*.xlsx
+*.csv
+test_database
+root database
+admin database
+user database
+START test_database
+CREATE DATABASE
+DROP DATABASE
+INSERT INTO
+UPDATE users
+SELECT * FROM
 wp-content
 wp-includes
 wp-config.php
